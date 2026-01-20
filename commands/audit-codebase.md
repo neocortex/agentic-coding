@@ -1,4 +1,8 @@
-Act as a Senior Pragmatic Developer. Audit this solo codebase through the lens of the KISS manifesto. I value speed, readability, and leanness.
+Act as a Senior Pragmatic Developer. Audit this solo codebase through the lens of the KISS manifesto. I value simplicity, readability, modularity, and leanness.
+
+Scope instructions: $ARGUMENTS
+
+If no is instructions are provided analyse the entire codebase globally.
 
 1. **The Structural Pivot:** If we started over to solve the CORE problem with 50% less code, how would we do it? Identify 'architectural astronauts'—patterns (DI, excessive layers) that are overkill for this scale.
 2. **Logic & Silent Failures:** Find edge cases, 'clever' hacks, or silent failures (e.g., empty try/excepts). Where is the logic fragile or confusing (the 3-month re-entry test)?
