@@ -1,10 +1,14 @@
+---
+name: ralph-prd-to-json
+description: "Convert a markdown PRD to Ralph's JSON execution format. Use when the user wants to convert a PRD to JSON, prepare a PRD for Ralph, or says things like 'convert this PRD', 'make the JSON for ralph', 'prd to json', or 'prepare this for ralph loop'."
+disable-model-invocation: true
+---
+
 # Ralph PRD Converter
 
 ## Task
 
-Convert the PRD.md $ARGUMENTS to a json format that Ralph uses for autonomous execution.
-
----
+Convert the PRD.md $ARGUMENTS to a JSON format that Ralph uses for autonomous execution.
 
 ## Output Format
 
@@ -30,11 +34,9 @@ Convert the PRD.md $ARGUMENTS to a json format that Ralph uses for autonomous ex
 }
 ```
 
----
-
 ## Story Size: The Number One Rule
 
-**Each story must be completable in ONE Ralph iteration (one context window).**
+Each story must be completable in ONE Ralph iteration (one context window).
 
 Ralph spawns a fresh Claude instance per iteration with no memory of previous work. If a story is too big, the LLM runs out of context before finishing and produces broken code.
 
@@ -45,13 +47,11 @@ Ralph spawns a fresh Claude instance per iteration with no memory of previous wo
 - Add a filter dropdown to a list
 
 ### Too big (split these):
-- "Build the entire dashboard" - Split into: schema, queries, UI components, filters
-- "Add authentication" - Split into: schema, middleware, login UI, session handling
-- "Refactor the API" - Split into one story per endpoint or pattern
+- "Build the entire dashboard" — split into: schema, queries, UI components, filters
+- "Add authentication" — split into: schema, middleware, login UI, session handling
+- "Refactor the API" — split into one story per endpoint or pattern
 
 **Rule of thumb:** If you cannot describe the change in 2-3 sentences, it is too big.
-
----
 
 ## Story Ordering: Dependencies First
 
@@ -67,11 +67,9 @@ Stories execute in priority order. Earlier stories must not depend on later ones
 1. UI component (depends on schema that does not exist yet)
 2. Schema change
 
----
-
 ## Acceptance Criteria: Must Be Verifiable
 
-Each criterion must be something Ralph can CHECK, not something vague.
+Each criterion must be something Ralph can check, not something vague.
 
 ### Good criteria (verifiable):
 - "Add `status` column to tasks table with default 'pending'"
@@ -103,8 +101,6 @@ For stories with testable logic, also include:
 
 Frontend stories are NOT complete until visually verified. Ralph will use the dev-browser skill to navigate to the page, interact with the UI, and confirm changes work.
 
----
-
 ## Conversion Rules
 
 1. **Each user story becomes one JSON entry**
@@ -112,8 +108,6 @@ Frontend stories are NOT complete until visually verified. Ralph will use the de
 3. **Priority**: Based on dependency order, then document order
 4. **All stories**: `passes: false` and empty `notes`
 5. **Always add**: "Typecheck passes" to every story's acceptance criteria
-
----
 
 ## Splitting Large PRDs
 
@@ -131,8 +125,6 @@ If a PRD has big features, split them:
 6. US-006: Add notification preferences page
 
 Each is one focused change that can be completed and verified independently.
-
----
 
 ## Example
 
@@ -216,11 +208,9 @@ Add ability to mark tasks with different statuses.
 }
 ```
 
----
-
 ## Checklist Before Saving
 
-Before writing the json PRD, verify:
+Before writing the JSON PRD, verify:
 
 - [ ] Each story is completable in one iteration (small enough)
 - [ ] Stories are ordered by dependency (schema to backend to UI)

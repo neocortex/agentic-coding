@@ -3,24 +3,26 @@
     "allow": [
       "Bash(grep:*)",
       "Bash(ls:*)",
+      "Bash(la:*)",
       "Bash(find:*)",
       "Bash(mv:*)",
       "Bash(mkdir:*)",
       "Bash(tree:*)",
       "Bash(touch:*)",
+      "Bash(grep:*)",
       "Bash(cat:*)",
       "Bash(cp:*)",
+      "Bash(wc:*)",
+      "Bash(diff:*)",
+      "Bash(find:*)",
       "Bash(uv add:*)",
-
       "Bash(uv run python:*)",
       "Bash(uv run pytest:*)",
       "Bash(uv run ruff check:*)",
       "Bash(uv run ruff format:*)",
-   
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git add:*)",
-
       "Bash(gh repo view:*)",
       "Bash(gh issue list:*)",
       "Bash(gh issue view:*)",
@@ -29,16 +31,28 @@
       "Bash(gh pr diff:*)",
       "Bash(gh pr checks:*)",
       "Bash(gh pr status:*)",
-
       "Read",
       "WebFetch(domain:*)",
       "WebSearch",
-
       "Skill(dev-browser:dev-browser)"
     ],
     "deny": [],
     "ask": [],
-    "defaultMode": "plan"
+    "defaultMode": "default"
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -47,7 +61,16 @@
   },
   "enabledPlugins": {
     "code-simplifier@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true
+    "ralph-loop@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high"
 }

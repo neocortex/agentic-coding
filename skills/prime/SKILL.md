@@ -1,22 +1,23 @@
 ---
-description: Prime agent with codebase understanding
+name: prime
+description: "Prime the agent with deep codebase understanding. Analyzes project structure, documentation, key files, architecture, tech stack, and recent git activity to produce a comprehensive project overview. Use when the user wants to onboard onto a project, understand a codebase, get a project summary, or says things like 'prime yourself', 'learn this codebase', 'understand this project', 'what is this repo', or 'give me a project overview'."
+disable-model-invocation: true
 ---
 
 # Prime: Load Project Context
 
-## Objective
-
-Build comprehensive understanding of the codebase by analyzing structure, documentation, and key files.
+Build comprehensive understanding of the codebase by analyzing structure, documentation, and key files. The goal is to produce a report that gives a clear mental model of the project — what it does, how it's organized, what it's built with, and what's been happening recently.
 
 ## Process
 
 ### 1. Analyze Project Structure
 
-List all tracked files:
-!`git ls-files`
+List all tracked files and show directory structure:
 
-Show directory structure:
-!`tree -L 3 -I 'node_modules|__pycache__|.git|dist|build'`
+```bash
+git ls-files
+tree -L 3 -I 'node_modules|__pycache__|.git|dist|build'
+```
 
 - Examine the directory structure to understand project organization
 - Identify the main entry points and core modules
@@ -39,15 +40,16 @@ Based on the structure, identify and read:
 
 ### 4. Understand Current State
 
-Check recent activity:
-!`git log -10 --oneline`
+Check recent activity and current status:
 
-Check current branch and status:
-!`git status`
+```bash
+git log -10 --oneline
+git status
+```
 
 ## Output Report
 
-Provide a concise summary covering:
+Provide a concise, scannable summary covering:
 
 ### Project Overview
 - Purpose and type of application
@@ -75,4 +77,4 @@ Provide a concise summary covering:
 - Recent changes or development focus
 - Any immediate observations or concerns
 
-**Make this summary easy to scan - use bullet points and clear headers.**
+Use bullet points and clear headers — make it easy to scan.

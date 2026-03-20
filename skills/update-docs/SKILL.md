@@ -1,39 +1,45 @@
+---
+name: update-docs
+description: "Analyze the codebase and ensure all documentation is accurate and up to date. Use when the user wants to sync docs, check if documentation matches the code, update READMEs, or says things like 'update docs', 'sync documentation', 'check if docs are current', or 'are my docs up to date'."
+disable-model-invocation: true
+---
+
 # Documentation Sync Check
 
 Analyze the codebase and ensure all documentation is accurate and up to date.
 
 ## Instructions
 
-1. **Discover documentation files** - Scan the repository for:
+1. **Discover documentation files** — scan the repository for:
    - `README.md` (root and subdirectories)
    - `*.md` files that appear to be documentation (PRDs, guides, specs, architecture docs)
    - `docs/` or `documentation/` directories
    - Any `CONTRIBUTING.md`, `CHANGELOG.md`, `ARCHITECTURE.md`, etc.
 
-2. **Analyze the codebase** - For each documentation file, understand:
+2. **Analyze the codebase** — for each documentation file, understand:
    - What the doc claims to describe (features, APIs, setup, architecture)
    - The actual current state of the code it references
    - Any new features, files, or patterns not documented
    - Any documented features that no longer exist or work differently
 
-3. **Identify gaps** - Flag only **substantial** discrepancies:
+3. **Identify gaps** — flag only **substantial** discrepancies:
    - Missing documentation for major features or modules
    - Incorrect setup/installation instructions
    - Outdated API signatures or usage examples
    - Deprecated code paths still documented as current
    - New important directories or entry points not mentioned
-   
+
    **Ignore minor issues** like typos, style preferences, or trivial version bumps.
 
-4. **Report findings** - Before making changes, provide a concise summary:
+4. **Report findings** — before making changes, provide a concise summary:
    ```
-   📄 [filename]
-   Status: ✅ Up to date | ⚠️ Needs updates
+   [filename]
+   Status: Up to date | Needs updates
    Gaps found: [brief list if any]
    ```
 
-5. **Update if needed** - For files with substantial gaps:
-   - Make **minimal, targeted edits** - don't rewrite entire docs
+5. **Update if needed** — for files with substantial gaps:
+   - Make **minimal, targeted edits** — don't rewrite entire docs
    - Preserve the original structure and style
    - Add missing information inline where it belongs
    - Remove or correct only clearly wrong information
@@ -50,7 +56,7 @@ Start with a quick scan summary, then detail each file. End with a list of files
 
 ## Important
 
-- Be conservative - documentation churn is annoying
+- Be conservative — documentation churn is annoying
 - Prefer accuracy over completeness
 - Match the existing doc style and tone
 - Don't add boilerplate or fluff

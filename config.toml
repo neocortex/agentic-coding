@@ -1,3 +1,6 @@
+personality = "pragmatic"
+model = "gpt-5.4"
+model_reasoning_effort = "xhigh"
 [approvals]
 mode = "auto"
 
@@ -5,5 +8,5 @@ mode = "auto"
 command = "npx"
 args = ["-y", "@sveltejs/mcp"]
 
-[projects."/Users/neocortex/coding/gladis"]
-trust_level = "trusted"
+[tui.model_availability_nux]
+"gpt-5.3-codex-spark" = 2

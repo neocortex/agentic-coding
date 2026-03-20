@@ -1,3 +1,9 @@
+---
+name: ralph-create-prd
+description: "Generate a structured Product Requirements Document (PRD) with user stories and acceptance criteria. Use when the user wants to create a PRD, define feature requirements, plan a feature with user stories, or says things like 'create a PRD', 'write requirements for', 'plan this feature', or 'ralph prd'."
+disable-model-invocation: true
+---
+
 # PRD Generator
 
 Create detailed Product Requirements Documents that are clear, actionable, and suitable for implementation.
@@ -6,8 +12,6 @@ Create detailed Product Requirements Documents that are clear, actionable, and s
 
 $ARGUMENTS
 
----
-
 ## The Job
 
 1. Receive a feature description from the user
@@ -15,9 +19,7 @@ $ARGUMENTS
 3. Generate a structured PRD based on answers
 4. Save to `prd-[feature-name].md`
 
-**Important:** Do NOT start implementing. Just create the PRD.
-
----
+Do NOT start implementing. Just create the PRD.
 
 ## Step 1: Clarifying Questions
 
@@ -52,8 +54,6 @@ Ask only critical questions where the initial prompt is ambiguous. Focus on:
 
 This lets users respond with "1A, 2C, 3B" for quick iteration.
 
----
-
 ## Step 2: PRD Structure
 
 Generate the PRD with these sections:
@@ -84,9 +84,9 @@ Each story should be small enough to implement in one focused session.
 - [ ] **[UI stories only]** Verify in browser using dev-browser skill
 ```
 
-**Important:** 
+**Important:**
 - Acceptance criteria must be verifiable, not vague. "Works correctly" is bad. "Button shows confirmation dialog before deleting" is good.
-- **For any story with UI changes:** Always include "Verify in browser using dev-browser skill" as acceptance criteria. This ensures visual verification of frontend work.
+- **For any story with UI changes:** Include "Verify in browser using dev-browser skill" as acceptance criteria to ensure visual verification of frontend work.
 
 ### 4. Functional Requirements
 Numbered list of specific functionalities:
@@ -116,8 +116,6 @@ How will success be measured?
 ### 9. Open Questions
 Remaining questions or areas needing clarification.
 
----
-
 ## Writing for Junior Developers
 
 The PRD reader may be a junior developer or AI agent. Therefore:
@@ -128,14 +126,10 @@ The PRD reader may be a junior developer or AI agent. Therefore:
 - Number requirements for easy reference
 - Use concrete examples where helpful
 
----
-
 ## Output
 
 - **Format:** Markdown (`.md`)
 - **Filename:** `prd-[feature-name].md` (kebab-case, saved in project root)
-
----
 
 ## Example PRD
 
@@ -223,8 +217,6 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - Should priority affect task ordering within a column?
 - Should we add keyboard shortcuts for priority changes?
 ```
-
----
 
 ## Checklist
 
