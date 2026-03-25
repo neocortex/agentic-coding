@@ -10,9 +10,9 @@ For Codex `AGENTS.md`, make a copy of `CLAUDE.md`.
 
 | File | Purpose | Global Counterpart |
 |---|---|---|
-| `CLAUDE.md` | Agent instructions (code style, dev rules, tooling) | `~/.claude/CLAUDE.md`, `~/.codex/agents.md` |
+| `CLAUDE.md` | Agent instructions (code style, dev rules, tooling) | `~/.claude/CLAUDE.md`, `~/.agents/agents.md` |
 | `settings.json` | Claude Code settings (permissions, hooks, plugins, model) | `~/.claude/settings.json` |
-| `config.toml` | Codex settings (model, approvals, MCP servers) | `~/.codex/config.toml` |
+| `config.toml` | Codex settings (model, approvals, MCP servers) | `~/.agents/config.toml` |
 
 ### `skills/` — Portable Skills
 
@@ -34,7 +34,7 @@ Skills specific to this project's workflow, loaded automatically by Claude Code.
 
 | Skill | Description |
 |---|---|
-| `sync-config` | Compare local configs and skills against global `~/.claude/` and `~/.codex/` counterparts. Reports diffs and asks how to resolve. |
+| `sync-config` | Compare local configs and skills against global `~/.claude/` and `~/.agents/` counterparts. Reports diffs and asks how to resolve. |
 
 ### `ralph/` — Ralph Loop
 
