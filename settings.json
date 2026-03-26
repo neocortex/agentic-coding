@@ -1,4 +1,8 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "Bash(grep:*)",
@@ -15,14 +19,17 @@
       "Bash(wc:*)",
       "Bash(diff:*)",
       "Bash(find:*)",
+
       "Bash(uv add:*)",
       "Bash(uv run python:*)",
       "Bash(uv run pytest:*)",
       "Bash(uv run ruff check:*)",
       "Bash(uv run ruff format:*)",
+      
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git add:*)",
+      "Bash(git commit:*)",
       "Bash(gh repo view:*)",
       "Bash(gh issue list:*)",
       "Bash(gh issue view:*)",
@@ -31,12 +38,24 @@
       "Bash(gh pr diff:*)",
       "Bash(gh pr checks:*)",
       "Bash(gh pr status:*)",
+
       "Read",
-      "WebFetch(domain:*)",
+      "Edit",
+      "Write",
+      "WebFetch",
       "WebSearch",
-      "Skill(dev-browser:dev-browser)"
+      "Glob"
     ],
-    "deny": [],
+    "deny": [
+      "Bash(rm *)",
+      "Bash(rmdir *)",
+      "Bash(rd *)",
+      "Bash(unlink *)",
+      "Bash(sudo *)",
+      "Bash(git push --force *)",
+      "Bash(git reset --hard  *)",
+      "Bash(git clean *)"
+    ],
     "ask": [],
     "defaultMode": "default"
   },
@@ -61,15 +80,10 @@
   },
   "enabledPlugins": {
     "code-simplifier@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true
-  },
-  "attribution": {
-    "commit": "",
-    "pr": ""
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high"
