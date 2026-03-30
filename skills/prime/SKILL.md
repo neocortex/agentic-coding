@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Prime: Load Project Context
 
-Build comprehensive understanding of the codebase by analyzing structure, documentation, and key files. The goal is to produce a report that gives a clear mental model of the project — what it does, how it's organized, what it's built with, and what's been happening recently.
+Build comprehensive understanding of the codebase by analyzing structure, documentation, and key files. This orients you on structure, active state, and key architectural conventions.
 
 ## Process
 
