@@ -1,6 +1,6 @@
 ---
 name: sync-config
-description: "Compare local agentic-coding config files and skills against their global counterparts in ~/.claude/, ~/.agents/, and ~/.codex/. Use when the user wants to sync configs, check for drift between local and global settings, or says things like 'sync config', 'check if configs match', 'compare settings', 'are my configs in sync', or 'diff local vs global'."
+description: "Compare local agentic-coding config files, skills, and commands against their global counterparts in ~/.claude/, ~/.agents/, and ~/.codex/. Use when the user wants to sync configs, check for drift between local and global settings/commands, or says things like 'sync config', 'check if configs match', 'compare settings', 'sync commands', 'are my configs in sync', or 'diff local vs global'."
 disable-model-invocation: true
 ---
 
@@ -10,12 +10,12 @@ Compare local project files against their global counterparts in `~/.claude/`, `
 
 ## How It Works
 
-There are 6 comparisons to run (listed below). For each one:
+There are 8 comparisons to run (listed below). For each one:
 
 1. **Read both files** and compare them
 2. **Report the result** using this format:
    ```
-   ## [N/6] [file pair]
+   ## [N/8] [file pair]
    Status: In sync | Differences found
    ```
 3. **If in sync** — say so and immediately move to the next comparison
@@ -30,7 +30,7 @@ Only present ONE comparison at a time. Do not batch multiple comparisons into a 
 
 **Shortcut**: If the user gives a blanket instruction like "update all locals to match global" or "skip all remaining", apply it across all remaining comparisons without asking each time — but still report the status of each.
 
-## The 6 Comparisons
+## The 8 Comparisons
 
 ### 1. Skills: local `skills/` vs `~/.claude/skills/`
 
@@ -42,7 +42,19 @@ Compare each skill folder in the local `skills/` directory against `~/.claude/sk
 
 Same comparison but against `~/.agents/skills/`. Codex may not have a skills directory — if it doesn't exist, note that and move on.
 
-### 3. Settings: local `settings.json` vs `~/.claude/settings.json`
+### 3. Commands: local `commands/` vs `~/.claude/commands/`
+
+Compare each file and subfolder in the local `commands/` directory against `~/.claude/commands/`. Check:
+- Command files that exist locally but not globally (and vice versa)
+- For commands that exist in both places, diff the file contents
+
+Ignore `.claude/` subfolders inside `commands/` — those are project-local settings, not command files to sync.
+
+### 4. Commands: local `commands/` vs `~/.codex/prompts/`
+
+Same comparison but against `~/.codex/prompts/`. This directory may not exist — if it doesn't, note that and move on.
+
+### 5. Settings: local `settings.json` vs `~/.claude/settings.json`
 
 Diff the two files. Pay attention to:
 - Permission differences (allow/deny lists)
@@ -52,23 +64,29 @@ Diff the two files. Pay attention to:
 
 When showing diffs, note which settings are local-only vs global-only vs different values for the same key. Filter out project-specific entries (like trusted project paths) that wouldn't make sense to sync.
 
-### 4. Config: local `config.toml` vs `~/.codex/config.toml`
+### 6. Config: local `config.toml` vs `~/.codex/config.toml`
 
-Diff the two files. Same approach — highlight meaningful differences, filter out project-specific entries (trusted project paths).
+Diff the two files. **Always ignore `[projects.*]` trusted project entries** — these are private and live only in the global config. If the local `config.toml` contains any `[projects.*]` sections, remove them from local as part of the sync (no need to ask). Compare only the remaining settings (personality, model, approvals, plugins, etc.).
 
-### 5. Instructions: local `CLAUDE.md` vs `~/.claude/CLAUDE.md`
+### 7. Instructions: local `CLAUDE.md` vs `~/.claude/CLAUDE.md`
 
 Diff the two files. These are the instruction files that guide agent behavior. Even small differences can cause inconsistent behavior across projects.
 
-### 6. Instructions: local `CLAUDE.md` vs `~/.codex/AGENTS.md`
+### 8. Instructions: local `CLAUDE.md` vs `~/.codex/AGENTS.md`
 
-Compare these two. They serve the same purpose (agent instructions) but for different tools, so expect some intentional differences (e.g., "CLAUDE.md" vs "AGENTS.md" self-references, "Claude Code" vs "Codex" naming). Flag only substantive differences in rules, conventions, or instructions.
+Compare these two. They serve the same purpose (agent instructions) but for different tools. **Before diffing, normalize these expected naming substitutions** — they are intentional and must never be flagged:
+- "CLAUDE.md" ↔ "AGENTS.md" (each file references itself)
+- "Claude Code" ↔ "Codex"
+- "Claude" ↔ "Codex" (when referring to the tool, not the model)
+
+After normalizing, flag only substantive differences in rules, conventions, or instructions. If the only differences are naming, report as "In sync" and move on.
 
 ## Gotchas
 
 - The local skills directory is `skills/` at the project root — **not** `.claude/skills/`. Only compare `skills/` against global.
+- The local commands directory is `commands/` at the project root. Ignore any `.claude/` subfolder inside it (that's a project-local settings override, not a command).
 - The local settings file is `settings.json` at the project root — **not** `.claude/settings.json` or `.claude/settings.local.json`.
-- Codex paths are split: skills live in `~/.agents/skills/`, but `AGENTS.md` and `config.toml` live in `~/.codex/`.
+- Codex paths are split: skills live in `~/.agents/skills/`, prompts (commands) live in `~/.codex/prompts/`, and `AGENTS.md` and `config.toml` live in `~/.codex/`.
 
 ## Important
 
