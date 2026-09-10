@@ -19,11 +19,21 @@ There are 8 comparisons to run (listed below). For each one:
    Status: In sync | Differences found
    ```
 3. **If in sync** — say so and immediately move to the next comparison
-4. **If differences found** — show a concise summary of what differs (meaningful deltas only, not full file contents), then present these options and **stop and wait for the user's response**:
-   - **Update local** — overwrite the local file with the global version
-   - **Update global** — overwrite the global file with the local version
-   - **Skip** — leave the difference as-is (it may be intentional)
-   - **Custom** — the user may want to merge specific parts
+4. **If differences found** — report them in this shape, then **stop and wait for the user's response**:
+   ```
+   - `<item>` — <what differs, one line>
+
+   1. **<Option> (recommended)** — <concrete action> — <one-line reason>
+   2. <Option> — <concrete action>
+   3. <Option> — <concrete action>
+   4. Custom — merge specific parts
+   ```
+   The options are **Update local** (overwrite local with global), **Update global** (overwrite global with local), **Skip** (leave as-is; it may be intentional), and **Custom**. Always list your recommendation first, in bold, with a one-line reason.
+
+   Keep it short:
+   - One line per difference. No full file contents, no paragraphs.
+   - Don't mention ignored items or preview later comparisons.
+   - Mention a side effect only if it would change the user's decision.
 5. **After the user responds** — apply their choice, confirm the result, then move to the next comparison
 
 Only present ONE comparison at a time. Do not batch multiple comparisons into a single message. The user should see one diff, make one decision, and then see the next.
@@ -86,6 +96,7 @@ After normalizing, flag only substantive differences in rules, conventions, or i
 - The local skills directory is `skills/` at the project root — **not** `.claude/skills/`. Only compare `skills/` against global.
 - The local commands directory is `commands/` at the project root. Ignore any `.claude/` subfolder inside it (that's a project-local settings override, not a command).
 - The local settings file is `settings.json` at the project root — **not** `.claude/settings.json` or `.claude/settings.local.json`.
+- `~/.agents/skills/.system/` holds Codex's built-in skills — always ignore it.
 - Codex paths are split: skills live in `~/.agents/skills/`, prompts (commands) live in `~/.codex/prompts/`, and `AGENTS.md` and `config.toml` live in `~/.codex/`.
 
 ## Important
