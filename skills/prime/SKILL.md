@@ -24,7 +24,7 @@ tree -L 3 -I 'node_modules|__pycache__|.git|dist|build'
 
 ### 2. Read Core Documentation
 
-- Read CLAUDE.md or similar global rules file
+- Read AGENTS.md (or CLAUDE.md) or similar global rules file
 - Read README files at project root and major directories
 - Search for and read all other documentation files in the project root and subfolders
 - Read any architecture documentation

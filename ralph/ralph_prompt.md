@@ -39,9 +39,9 @@ If you discover a **reusable pattern**, add it to the `## Codebase Patterns` sec
 - "Always use X for API calls."
 - "The theme variables are located in /styles/theme.ts."
 
-## Update CLAUDE.md Files
+## Update AGENTS.md Files
 
-If you modify a directory, check for an `CLAUDE.md` file within it. If it exists (or if the directory is complex), add valuable, non-obvious learnings about that specific module (dependencies, API quirks, etc.).
+If you modify a directory, check for an `AGENTS.md` file within it. If it exists (or if the directory is complex), add valuable, non-obvious learnings about that specific module (dependencies, API quirks, etc.).
 
 ## Quality Requirements
 

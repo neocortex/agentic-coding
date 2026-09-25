@@ -1,6 +1,6 @@
-# CLAUDE.md 
+# AGENTS.md 
 
-This file provides comprehensive guidance to Claude Code when working with Python code.
+This file provides comprehensive guidance to coding agents when working with Python code.
 
 ## Core Development Philosophy
 
@@ -26,7 +26,7 @@ Avoid building functionality on speculation. Implement features only when they a
 - NEVER use mock implementations - always real data/APIs
 - Make smallest reasonable changes for desired outcome
 - Single Responsibility: Each function, class, and module should have one clear purpose.
-- IMPORTANT: Never mention "Claude" or "Claude Code" as co-author in commit messages
+- IMPORTANT: Never mention an AI agent (Claude, Codex, etc.) as co-author in commit messages
 
 ## Documentation
 
@@ -110,7 +110,7 @@ uv run ruff check --fix .
 - NEVER ASSUME OR GUESS - When in doubt, ask for clarification
 - Request help when stuck
 - Always verify file paths and module names before use
-- Keep CLAUDE.md updated when adding new patterns or dependencies
+- Keep AGENTS.md updated when adding new patterns or dependencies
 - Test your code - No feature is complete without tests
 - Document your decisions - Future developers (including yourself) will thank you
 - ULTRATHINK before major changes

@@ -78,18 +78,13 @@ When showing diffs, note which settings are local-only vs global-only vs differe
 
 Diff the two files. **Always ignore `[projects.*]` trusted project entries** — these are private and live only in the global config. If the local `config.toml` contains any `[projects.*]` sections, remove them from local as part of the sync (no need to ask). Compare only the remaining settings (personality, model, approvals, plugins, etc.).
 
-### 7. Instructions: local `CLAUDE.md` vs `~/.claude/CLAUDE.md`
+### 7. Instructions: local `AGENTS.md` vs `~/.codex/AGENTS.md`
 
-Diff the two files. These are the instruction files that guide agent behavior. Even small differences can cause inconsistent behavior across projects.
+Diff the two files. These are the instruction files that guide agent behavior for both Claude Code and Codex, so they must stay tool-neutral. Even small differences can cause inconsistent behavior across projects.
 
-### 8. Instructions: local `CLAUDE.md` vs `~/.codex/AGENTS.md`
+### 8. Instructions: `~/.claude/CLAUDE.md` imports `~/.codex/AGENTS.md`
 
-Compare these two. They serve the same purpose (agent instructions) but for different tools. **Before diffing, normalize these expected naming substitutions** — they are intentional and must never be flagged:
-- "CLAUDE.md" ↔ "AGENTS.md" (each file references itself)
-- "Claude Code" ↔ "Codex"
-- "Claude" ↔ "Codex" (when referring to the tool, not the model)
-
-After normalizing, flag only substantive differences in rules, conventions, or instructions. If the only differences are naming, report as "In sync" and move on.
+Claude Code has no global `AGENTS.md`, so `~/.claude/CLAUDE.md` must contain only the import line `@~/.codex/AGENTS.md`. Anything else in it (e.g. an old copy of the rules) is a difference — **Update global** moves any extra rules into local `AGENTS.md`, then resets the file to the import line.
 
 ## Gotchas
 

@@ -2,7 +2,11 @@
 
 Portable agentic coding configurations, skills, and tools for Claude Code and Codex.
 
-For Codex `AGENTS.md`, make a copy of `CLAUDE.md` and swap "Claude"/"Claude Code" for "Codex".
+`AGENTS.md` is the single, tool-neutral instruction file for both tools. Claude Code has no global `AGENTS.md`, so `~/.claude/CLAUDE.md` only imports the Codex one:
+
+```markdown
+@~/.codex/AGENTS.md
+```
 
 ## Repository Structure
 
@@ -10,7 +14,7 @@ For Codex `AGENTS.md`, make a copy of `CLAUDE.md` and swap "Claude"/"Claude Code
 
 | File | Purpose | Global Counterpart |
 |---|---|---|
-| `CLAUDE.md` | Agent instructions (code style, dev rules, tooling) | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md` |
+| `AGENTS.md` | Agent instructions (code style, dev rules, tooling) | `~/.codex/AGENTS.md` (imported by `~/.claude/CLAUDE.md`) |
 | `settings.json` | Claude Code settings (permissions, hooks, plugins, model) | `~/.claude/settings.json` |
 | `config.toml` | Codex settings (model, approvals, plugins) | `~/.codex/config.toml` |
 
