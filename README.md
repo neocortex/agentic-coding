@@ -26,6 +26,7 @@ Skills invocable via `/skill-name` in Claude Code. Global counterparts: `~/.clau
 |---|---|
 | `commit` | Create git commits with conventional commit format. Model-invocable. |
 | `audit-codebase` | KISS manifesto codebase audit with actionable report and KISS score. |
+| `create-prd` | Create a Product Requirements Document from the conversation or an input file. |
 | `excalidraw-diagram` | Create Excalidraw diagram JSON files that visualize workflows, architectures, or concepts. Model-invocable. |
 | `handoff` | Write a session handoff document so the next agent or session can continue the work. Model-invocable. |
 | `prime` | Deep codebase primer — structure, docs, key files, architecture, tech stack. |
@@ -33,21 +34,13 @@ Skills invocable via `/skill-name` in Claude Code. Global counterparts: `~/.clau
 | `ralph-prd-to-json` | Convert markdown PRDs to Ralph's JSON execution format. |
 | `update-docs` | Scan and sync documentation against current code state. |
 
-### `commands/` — Slash Commands
-
-Commands invocable via `/command-name` in Claude Code. Global counterpart: `~/.claude/commands/`.
-
-| Command | Description |
-|---|---|
-| `create_prd` | Create a Product Requirements Document from the conversation. |
-
 ### `.claude/skills/` — Project Skills
 
-Skills specific to this project's workflow, loaded automatically by Claude Code.
+Skills for this repo only, invocable via `/skill-name` in Claude Code.
 
 | Skill | Description |
 |---|---|
-| `sync-config` | Compare local configs, skills, and commands against their global `~/.claude/`, `~/.agents/`, and `~/.codex/` counterparts. Reports diffs one at a time with a recommended resolution. |
+| `sync-config` | Diff local configs and skills against their global copies, one difference at a time. |
 
 ### `ralph/` — Ralph Loop
 
@@ -57,4 +50,3 @@ Autonomous coding agent that implements features by working through PRD user sto
 |---|---|
 | `ralph_prompt.md` | Agent instructions for each Ralph iteration |
 | `ralph.sh` | Bash script that runs the autonomous loop |
-| `README.md` | Setup and usage guide |
