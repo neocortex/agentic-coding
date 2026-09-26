@@ -38,10 +38,16 @@ Avoid building functionality on speculation. Implement features only when they a
 ## Testing
 
 - Write tests for all features
+- Prefer E2E tests as the primary testing mechanism; use them to verify features work end to end
 - Include: expected uses, edge cases, failure cases
+- Every E2E run must produce a repeatable proof: a single command to re-run it plus saved output (log, screenshot, or JSON)
+- Unit tests only when a component must be tested in isolation, and only test-first:
+  1. List the ways it can fail (as test cases)
+  2. Write the failing tests
+  3. Then write the code
+- Never add unit tests after the implementation exists
 - Update tests when logic changes
 - Test output must be pristine - capture expected errors
-- NO EXCEPTIONS: All projects need unit, integration, and E2E tests unless explicitly authorized to skip
 
 ## Important notes 
 
