@@ -178,6 +178,7 @@ uv run pytest --cov=src --cov-report=html
 
 - Python with PEP8 with line-width: 119
 - Line length should be max 119 characters ruff rule in pyproject.toml
+- The line limit applies to `.py` files; prose files follow their own rules
 - Use double quotes for strings
 - Always use type hints for function signatures and class attributes
 - Use ruff for formatting and linting:
