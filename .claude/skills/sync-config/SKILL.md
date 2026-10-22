@@ -4,86 +4,75 @@ description: "Compare local agentic-coding config files and skills against their
 disable-model-invocation: true
 ---
 
-# Config Sync Check
+# Config Sync
 
-Compare local project files against their global counterparts in `~/.claude/`, `~/.agents/`, and `~/.codex/`. Work through each comparison **one at a time** — check, report, resolve, then move to the next.
+Sync local project files with their global counterparts in `~/.claude/`, `~/.agents/`, and `~/.codex/`. The direction rules settle most differences — apply those without asking, and ask only about the rest.
 
-## How It Works
+## The 6 Comparisons
 
-There are 6 comparisons to run (listed below). For each one:
+| # | Local | Global |
+|---|---|---|
+| 1 | `skills/` | `~/.claude/skills/` |
+| 2 | `skills/` | `~/.agents/skills/` |
+| 3 | `settings.json` | `~/.claude/settings.json` |
+| 4 | `config.toml` | `~/.codex/config.toml` |
+| 5 | — | `~/.claude/CLAUDE.md` must contain only the line `@~/.codex/AGENTS.md` |
+| 6 | `AGENTS.md` | `~/.codex/AGENTS.md` |
 
-1. **Read both files** and compare them
-2. **Report the result** using this format:
+Compare single differences, not whole files: a JSON or TOML key, a Markdown line or section, a skill file. Reordered JSON keys and Markdown whitespace aren't differences.
+
+Comparison 5 needs no direction: Claude Code has no global `AGENTS.md`, so move any extra rules from `~/.claude/CLAUDE.md` into local `AGENTS.md` and reset the file to the import line. It runs before 6 so those rules then reach `~/.codex/AGENTS.md`.
+
+## Direction Rules
+
+A path's **base** is its version in the last sync commit:
+
+```bash
+S=$(git log -1 --format=%h --grep='^chore(config): sync local configs')
+git show "$S:settings.json"                          # base version of a file
+git diff --name-only "$S" -- <path>                  # local changed since base (incl. uncommitted)
+git ls-files --others --exclude-standard -- <path>   # new untracked local files
+```
+
+For each difference, the first matching rule decides:
+
+1. **Ignore** — it's on the ignore list. Don't sync it, don't mention it.
+2. **Ask** — both local and global differ from base; or the change would delete something global; or a whole skill exists only globally and not in base (it may be a third-party install).
+3. **Local → global** — local differs from base, global still equals base. The repo was edited.
+4. **Local → `~/.agents/skills/`** — comparison 2 only, local matches `~/.claude/skills/`. Codex skills are a copy of the Claude ones, so this overwrites edits made only in `~/.agents/skills/`.
+5. **Global → local** — local equals base. `/config`, the Codex app, and installers write to the global files, so global is usually newer.
+
+## Ignore List
+
+- Secrets such as `PLAYWRIGHT_MCP_EXTENSION_TOKEN` in `[mcp_servers.playwright.env]`. They never go into the repo.
+- Codex machine state in `config.toml`: `[projects.*]`, `[hooks.state]`, `[tui] screen_reader_detection_done`. If local has `[projects.*]` sections, delete them from local.
+- The Herdr `SessionStart` hook in `~/.claude/settings.json` — it runs a script on this machine.
+- Skills managed by their own installers: `herdr`, `impeccable`.
+- `~/.claude/skills/synced/` (Claude account sync) and `~/.agents/skills/.system/` (Codex built-ins).
+- Generated files inside skills: `.venv/`, `uv.lock`, `__pycache__/`, `.DS_Store`.
+
+When the user answers **Skip**, add that item here so it isn't asked again.
+
+## Process
+
+1. Run all 6 comparisons and sort every difference by the rules.
+2. Apply every rule 3–5 difference. Edit key by key — never copy a whole `settings.json` or `config.toml` over the other, since each holds ignored entries that must stay. Copy skill files whole.
+3. Ask about the rule 2 differences one at a time and wait for each answer. An item that shows up in several comparisons is one question:
    ```
-   ## [N/6] [file pair]
-   Status: In sync | Differences found
-   ```
-3. **If in sync** — say so and immediately move to the next comparison
-4. **If differences found** — report them in this shape, then **stop and wait for the user's response**:
-   ```
-   - `<item>` — <what differs, one line>
+   - `<item>` — local: <…>; global: <…>; base: <…>
 
    1. **<Option> (recommended)** — <concrete action> — <one-line reason>
    2. <Option> — <concrete action>
    3. <Option> — <concrete action>
    4. Custom — merge specific parts
    ```
-   The options are **Update local** (overwrite local with global), **Update global** (overwrite global with local), **Skip** (leave as-is; it may be intentional), and **Custom**. Always list your recommendation first, in bold, with a one-line reason.
-
-   Keep it short:
-   - One line per difference. No full file contents, no paragraphs.
-   - Don't mention ignored items or preview later comparisons.
-   - Mention a side effect only if it would change the user's decision.
-5. **After the user responds** — apply their choice, confirm the result, then move to the next comparison
-
-Only present ONE comparison at a time. Do not batch multiple comparisons into a single message. The user should see one diff, make one decision, and then see the next.
-
-**Shortcut**: If the user gives a blanket instruction like "update all locals to match global" or "skip all remaining", apply it across all remaining comparisons without asking each time — but still report the status of each.
-
-## The 6 Comparisons
-
-### 1. Skills: local `skills/` vs `~/.claude/skills/`
-
-Compare each skill folder in the local `skills/` directory against `~/.claude/skills/`. Check:
-- Skills that exist locally but not globally (and vice versa)
-- For skills that exist in both places, diff the `SKILL.md` contents and any bundled resources
-
-### 2. Skills: local `skills/` vs `~/.agents/skills/`
-
-Same comparison but against `~/.agents/skills/`. Codex may not have a skills directory — if it doesn't exist, note that and move on.
-
-### 3. Settings: local `settings.json` vs `~/.claude/settings.json`
-
-Diff the two files. Pay attention to:
-- Permission differences (allow/deny lists)
-- Plugin differences
-- Hook differences
-- Model and mode settings
-
-When showing diffs, note which settings are local-only vs global-only vs different values for the same key. Filter out project-specific entries (like trusted project paths) that wouldn't make sense to sync.
-
-### 4. Config: local `config.toml` vs `~/.codex/config.toml`
-
-Diff the two files. **Always ignore `[projects.*]` trusted project entries** — these are private and live only in the global config. If the local `config.toml` contains any `[projects.*]` sections, remove them from local as part of the sync (no need to ask). Compare only the remaining settings (personality, model, approvals, plugins, etc.).
-
-### 5. Instructions: local `AGENTS.md` vs `~/.codex/AGENTS.md`
-
-Diff the two files. These are the instruction files that guide agent behavior for both Claude Code and Codex, so they must stay tool-neutral. Even small differences can cause inconsistent behavior across projects.
-
-### 6. Instructions: `~/.claude/CLAUDE.md` imports `~/.codex/AGENTS.md`
-
-Claude Code has no global `AGENTS.md`, so `~/.claude/CLAUDE.md` must contain only the import line `@~/.codex/AGENTS.md`. Anything else in it (e.g. an old copy of the rules) is a difference — **Update global** moves any extra rules into local `AGENTS.md`, then resets the file to the import line.
+   Options are **Update local**, **Update global**, **Skip**, and **Custom**, recommendation first.
+4. Report one summary: a table with one row per comparison (`In sync` or what changed, with direction), then a **Global writes** list naming every global file changed — they aren't in git.
+5. Offer to commit local changes as `chore(config): sync local configs with global counterparts`. The next sync uses that commit as its base.
 
 ## Gotchas
 
-- The local skills directory is `skills/` at the project root — **not** `.claude/skills/`. Only compare `skills/` against global.
+- The local skills directory is `skills/` at the project root — **not** `.claude/skills/`.
 - The local settings file is `settings.json` at the project root — **not** `.claude/settings.json` or `.claude/settings.local.json`.
-- `~/.agents/skills/.system/` holds Codex's built-in skills — always ignore it.
 - Codex paths are split: skills live in `~/.agents/skills/`, and `AGENTS.md` and `config.toml` live in `~/.codex/`.
-
-## Important
-
-- For JSON files, use structural comparison — reordered keys aren't meaningful differences
-- For markdown files, focus on content differences, not whitespace
-- Don't modify any files until the user explicitly says what to do
-- If a global counterpart doesn't exist (e.g., `~/.agents/skills/` is empty), just report it and move on
+- If a global counterpart doesn't exist, report it and move on.

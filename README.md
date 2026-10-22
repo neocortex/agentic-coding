@@ -40,7 +40,7 @@ Skills for this repo only, invocable via `/skill-name` in Claude Code.
 
 | Skill | Description |
 |---|---|
-| `sync-config` | Diff local configs and skills against their global copies, one difference at a time. |
+| `sync-config` | Sync local configs and skills with their global copies; asks only when the direction is unclear. |
 
 ### `ralph/` — Ralph Loop
 
